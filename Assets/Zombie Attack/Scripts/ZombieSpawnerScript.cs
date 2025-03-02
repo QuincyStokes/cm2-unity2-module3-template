@@ -8,14 +8,18 @@ public class ZombieSpawnerScript : MonoBehaviour
     public GameObject zombiePrefab;
     public Transform target;
 
-    public float spawnRange = 10;
+    public float spawnRange = 40;
 
     public UnityEvent ZombieDied;
 
-    void Start()
+    private bool isCoroutineRunning = false;
+    
+    private void Update()
     {
-        // LESSON 3-4: Replace code below.
-        SpawnZombie();
+        if(!isCoroutineRunning)
+        {
+            StartCoroutine(ZombieSpawnRepeater());
+        }
     }
 
     public Vector3 RandomPosition()
@@ -25,7 +29,8 @@ public class ZombieSpawnerScript : MonoBehaviour
 
     public void SpawnZombie()
     {
-        // LESSON 3-3: Add code below.
+        GameObject zombie = Instantiate(zombiePrefab, RandomPosition(), Quaternion.identity);
+        zombie.GetComponent<ZombieScript>().Init(target, this);
     }
 
     public void ZombieHasDied()
@@ -34,4 +39,11 @@ public class ZombieSpawnerScript : MonoBehaviour
     }
 
     // LESSON 3-4: Add coroutine below.
+    private IEnumerator ZombieSpawnRepeater()
+    {
+        isCoroutineRunning = true;
+        yield return new WaitForSeconds(5f);
+        SpawnZombie();
+        isCoroutineRunning = false;
+    }
 }

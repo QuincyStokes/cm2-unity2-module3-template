@@ -7,7 +7,7 @@ public class FireProjectile : MonoBehaviour
 {
     public GameObject bulletPrefab;
     public float bulletActiveTime = 3;
-    public float bulletPower = 10;
+    public float bulletPower = 75;
 
     public GameObject firepoint;
 
@@ -16,6 +16,7 @@ public class FireProjectile : MonoBehaviour
     public float reloadTime = 3f;
 
     private float ammoCount;
+    private bool isCoroutineRunning;
 
     void Start()
     {
@@ -31,11 +32,18 @@ public class FireProjectile : MonoBehaviour
             GameObject bullet = Instantiate(bulletPrefab);
             Destroy(bullet, bulletActiveTime);
             BulletScript bulletScript = bullet.GetComponent<BulletScript>();
+            FireBullet(bulletScript);
             
+            ammoCount -= 1;
             ammoText.text = $"Ammo: {ammoCount}";
         }
 
-        // LESSON 3-4: Add code below.
+        // LESSON 3-4: Add code below.\
+        if(ammoCount == 0 && !isCoroutineRunning)
+        {
+            StartCoroutine(Reloading());
+        }
+
     }
 
     private void FireBullet(BulletScript bullet)
@@ -47,9 +55,12 @@ public class FireProjectile : MonoBehaviour
     public IEnumerator Reloading()
     {
         // LESSON 3-4: Add code below.
-
-        yield return new WaitForSeconds(0);
-        
+        isCoroutineRunning = true;
+        ammoText.text = "Reloading...";
+        yield return new WaitForSeconds(reloadTime);
+        ammoCount = maxAmmo;
+        ammoText.text = "Ammo: " + ammoCount.ToString();
+        isCoroutineRunning = false;
         // LESSON 3-4: Add code below.
     }
 }
