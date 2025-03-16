@@ -10,9 +10,15 @@ public class CollectathonGameManager : MonoBehaviour
     // LESSON 3-5: Add variable below.
 
     // Start is called before the first frame update
+
+    public InvItem[] levelItems;
     void Start()
     {
-        // LESSON 3-6: Add code below.
+        // LESSON 3-6: Add code below.n
+        for(int i = 0; i < levelItems.Length; i++)
+        {
+            PlaceLocation(i, levelItems[i].gameObject);
+        }
     }
 
 

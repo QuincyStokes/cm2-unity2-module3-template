@@ -36,7 +36,7 @@ public class CannonControlScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float moveBarrel = -Input.GetAxis("Vertical");
+        float moveBarrel = Input.GetAxis("Vertical");
         float moveBase = Input.GetAxis("Horizontal");
 
         currentAngle = Mathf.Clamp(cannonBarrel.transform.localEulerAngles.x + moveBarrel, minAngle, maxAngle);

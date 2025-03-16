@@ -13,6 +13,7 @@ public class InventoryScript : MonoBehaviour
 
     // LESSON 3-5: Add variable below.
 
+    List<InvItem> inventory = new List<InvItem>();
     void Start()
     {
         inventoryShowing = false;
@@ -50,10 +51,21 @@ public class InventoryScript : MonoBehaviour
         DeleteOldItems();
        
         // LESSON 3-6: Add code below.
+
+        foreach(InvItem item in inventory)
+        {
+            GameObject invText = Instantiate(textPrefab, content.transform);
+            invText.GetComponent<TextMeshProUGUI>().text = item.invName;
+        }
     }
 
     private void OnTriggerEnter(Collider other) 
     {
         // LESSON 3-5: Add code below.
+        if(other.gameObject.GetComponent<InvItem>())
+        {
+            inventory.Add(other.gameObject.GetComponent<InvItem>());
+            other.gameObject.SetActive(false);
+        }
     }
 }
